@@ -1,5 +1,5 @@
 let size = 16;
-
+let colorMode = "black";
 
 function createGrid(size) {
     const grid = document.getElementById('grid');
@@ -18,18 +18,42 @@ function createGrid(size) {
 
     
     const squareSize = containerWidth / size;
-    for(let i = 0; i < size * size; i++) {
-        const newDiv = document.createElement("div");
-        newDiv.style.width = `${squareSize}px`;
-        newDiv.style.height = `${squareSize}px`
-        newDiv.style.background = "white";
-        grid.appendChild(newDiv);
+        for(let i = 0; i < size * size; i++) {
+            const newDiv = document.createElement("div");
+            newDiv.style.width = `${squareSize}px`;
+            newDiv.style.height = `${squareSize}px`
+            newDiv.style.background = "white";
+            grid.appendChild(newDiv);
+            
+            newDiv.addEventListener('mouseover', function() {
+                if (colorMode === "black") {
+                    newDiv.style.background = "black";
+                } else if (colorMode === "random") {
+                    newDiv.style.background = getRandomColor();
+                }
+            });
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color ='#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        const randomColor = document.getElementById('randomcolor');
+        randomColor.addEventListener('click', () => {
+            colorMode = "random";
+        });
         
-        newDiv.addEventListener('mouseover', function() {
-            newDiv.style.background = "black";
-        })
-    }
-}
+        const blackColor = document.getElementById('blackcolor');
+        blackColor.addEventListener('click', () => {
+            colorMode = "black";
+        });
+    }    
+
 
 createGrid(size);
 const gridReset = document.getElementById('gridreset');
@@ -43,5 +67,6 @@ gridReset.addEventListener('click',  () => {
             alert('Invalid input! Please enter a number between 1 and 100.');
         }
 });
+
 
 
